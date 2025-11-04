@@ -1,7 +1,23 @@
 import type { User } from '../types';
 
+function resolveApiBaseUrl(): string {
+  const envUrl = (import.meta.env.VITE_BACKEND_URL as string | undefined)?.trim();
+  if (envUrl) {
+    return envUrl.replace(/\/+$/, '');
+  }
+
+  if (typeof window !== 'undefined') {
+    const { protocol, host } = window.location;
+    if (protocol === 'https:' || protocol === 'http:') {
+      return `${protocol}//${host}`;
+    }
+  }
+
+  return 'http://localhost:3001';
+}
+
 // This should be the address of your backend server.
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = resolveApiBaseUrl();
 const allowMockSignin = import.meta.env.VITE_ALLOW_MOCK_SIGNIN === 'true';
 
 /**
