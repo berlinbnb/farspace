@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FarSpace</title>
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Farcaster Mini App Meta Tags -->
+    <meta property="og:title" content="FarSpace" />
+    <meta property="og:description" content="Live voice spaces powered by Farcaster identity." />
+    <meta property="og:image" content="https://placehold.co/1200x630/0D0D0E/9B4DFF/png?text=FarSpace" />
+    <meta property="fc:frame" content="vNext" />
+    <meta property="fc:frame:image" content="https://placehold.co/1200x630/0D0D0E/9B4DFF/png?text=Launch+FarSpace" />
+    <meta property="fc:frame:button:1" content="Launch FarSpace" />
+    <meta property="fc:frame:button:1:action" content="miniapp" />
+    <meta property="fc:miniapp:name" content="FarSpace - Live Audio Rooms" />
+    <meta property="fc:miniapp:image" content="https://placehold.co/512x512/0D0D0E/9B4DFF/png?text=FS" />
+    <!-- NOTE: This URL is a placeholder. In a real app, it would point to your backend endpoint for SIWF. -->
+    <meta property="fc:miniapp:eth_personal_sign_redirect_url" content="https://farspace-app.example.com/api/siwf/callback" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'dark-bg': '#0D0D0E',
+              'primary-accent': '#9B4DFF',
+              'secondary-accent': '#66E3FF',
+              'glass-bg': 'rgba(255, 255, 255, 0.05)',
+              'glass-border': 'rgba(255, 255, 255, 0.1)',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            borderRadius: {
+              'custom': '14px',
+            },
+            boxShadow: {
+                'glow-primary': '0 0 15px rgba(155, 77, 255, 0.3)',
+                'glow-secondary': '0 0 15px rgba(102, 227, 255, 0.3)',
+            },
+            animation: {
+                'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+                'pulse-glow': {
+                    '0%, 100%': { opacity: '0.5', transform: 'scale(1)' },
+                    '50%': { opacity: '1', transform: 'scale(1.08)' },
+                }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      .avatar-speaking::after {
+        content: '';
+        position: absolute;
+        inset: -6px;
+        border-radius: 9999px;
+        border: 2px solid rgba(102, 227, 255, 0.35);
+        box-shadow: 0 0 20px rgba(102, 227, 255, 0.45);
+        opacity: 0;
+        animation: avatar-speaking-pulse 1.3s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      .speaking-glow {
+        animation: avatar-speaking-scale 1.3s ease-in-out infinite;
+      }
+
+      .speaking-row {
+        background: rgba(102, 227, 255, 0.1);
+        animation: speaking-row 1.4s ease-in-out infinite;
+      }
+
+      @keyframes avatar-speaking-pulse {
+        0%, 100% {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes avatar-speaking-scale {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes speaking-row {
+        0%, 100% {
+          background: rgba(102, 227, 255, 0.1);
+        }
+        50% {
+          background: rgba(102, 227, 255, 0.18);
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-dark-bg text-white font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

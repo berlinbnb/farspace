@@ -1,0 +1,7 @@
+{
+  "name": "FarSpace",
+  "description": "FarSpace is a voice-based community conversation platform for Farcaster users, similar to Twitter Spaces, but decentralized and identity-verified.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

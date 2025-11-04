@@ -1,0 +1,14 @@
+{
+  "name": "FarSpace - Live Audio Rooms",
+  "short_name": "FarSpace",
+  "description": "FarSpace is a voice-based community conversation platform for Farcaster users, similar to Twitter Spaces, but decentralized and identity-verified.",
+  "image_url": "https://placehold.co/1200x630/0D0D0E/9B4DFF/png?text=FarSpace",
+  "icon_url": "https://placehold.co/512x512/0D0D0E/9B4DFF/png?text=FS",
+  "dapp_url": "https://farspace-app.example.com",
+  "details_url": "https://farspace-app.example.com",
+  "action": {
+    "type": "post",
+    "name": "Launch FarSpace",
+    "post_url": "https://farspace-app.example.com/api/frame"
+  }
+}
