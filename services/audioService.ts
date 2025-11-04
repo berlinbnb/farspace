@@ -7,8 +7,19 @@ const OUTPUT_SAMPLE_RATE = 24000;
 type TranscriptionCallback = (update: { text: string, isFinal: boolean }) => void;
 type FunctionCallCallback = (call: { name: string; args: any; id: string }) => void;
 
+const resolveApiKey = () => {
+  const browserKey =
+    (import.meta.env.VITE_GEMINI_API_KEY as string | undefined) ??
+    (import.meta.env.VITE_API_KEY as string | undefined) ??
+    (typeof process !== 'undefined'
+      ? process.env.VITE_GEMINI_API_KEY ?? process.env.GEMINI_API_KEY ?? process.env.API_KEY
+      : undefined);
+
+  return browserKey?.trim();
+};
+
 class AudioService {
-  private ai: GoogleGenAI;
+  private ai: GoogleGenAI | null = null;
   private session: LiveSession | null = null;
   private sessionPromise: Promise<LiveSession> | null = null;
   private inputAudioContext: AudioContext | null = null;
@@ -19,12 +30,21 @@ class AudioService {
   private onTranscriptionUpdate: TranscriptionCallback | null = null;
   private onFunctionCall: FunctionCallCallback | null = null;
   private currentInputTranscription = '';
+  private readonly apiKey: string | undefined;
+  private readonly isEnabled: boolean;
 
   constructor() {
-    if (!process.env.API_KEY) {
-      throw new Error("API_KEY environment variable not set");
+    this.apiKey = resolveApiKey();
+    this.isEnabled = Boolean(this.apiKey);
+
+    if (!this.isEnabled) {
+      console.warn(
+        'Gemini live audio features are disabled. Provide VITE_GEMINI_API_KEY to enable realtime audio.',
+      );
+      return;
     }
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+    this.ai = new GoogleGenAI({ apiKey: this.apiKey! });
   }
   
   public setSpeakerCallback(callback: (speakerId: string | null) => void) {
@@ -43,6 +63,11 @@ class AudioService {
       userId: string, 
       options: { tools?: Tool[], systemInstruction?: string } = {}
   ): Promise<void> {
+    if (!this.isEnabled || !this.ai) {
+      console.warn('startStreaming skipped: Gemini live audio is disabled (missing API key).');
+      return;
+    }
+
     if (this.session) return;
 
     try {
